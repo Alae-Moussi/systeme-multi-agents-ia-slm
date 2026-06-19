@@ -1,0 +1,109 @@
+ ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .delete-btn, .complete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo App</h1>
+        <form id="task-form">
+            <input type="text" id="task-name" placeholder="Enter task name">
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        const form = document.getElementById('task-form');
+        const taskList = document.getElementById('task-list');
+
+        function addTask(name) {
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `task-${Date.now()}`;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.classList.add('delete-btn');
+
+            const completeBtn = document.createElement('button');
+            completeBtn.textContent = 'Complete';
+            completeBtn.classList.add('complete-btn');
+
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(name));
+            li.appendChild(deleteBtn);
+            li.appendChild(completeBtn);
+            taskList.appendChild(li);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('task-name').value;
+            if (name) {
+                addTask(name);
+                document.getElementById('task-name').value = '';
+            }
+        });
+
+        taskList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.parentNode.remove();
+            } else if (e.target.classList.contains('complete-btn')) {
+                e.target.parentNode.style.textDecoration = 'line-through';
+                e.target.remove();
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+This code provides a simple Todo App with a modern and clean interface, a form to add tasks, a list of tasks with delete and complete buttons, inline CSS, and JavaScript all included in one HTML file. The application does not include any actual data storage or API calls.

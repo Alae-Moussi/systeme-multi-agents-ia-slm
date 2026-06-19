@@ -1,0 +1,25 @@
+{
+  "nom_projet": "Todo App",
+  "description": "Web application for managing tasks",
+  "fonctionnalites": [
+    "Create new task",
+    "Mark a task as completed",
+    "Delete a task",
+    "View all tasks",
+    "Filter tasks by date",
+    "Sort tasks by priority"
+  ],
+  "technique": {
+    "frontend": "ReactJS, HTML5, CSS3",
+    "backend": "Node.js, Express.js",
+    "base_de_donnees": "MongoDB"
+  },
+  "architecture": "Client-server architecture with RESTful API",
+  "flux_utilisateur": [
+    "Login/Register page",
+    "Dashboard showing all tasks",
+    "Create task form",
+    "Task details page",
+    "Edit task form"
+  ]
+}
