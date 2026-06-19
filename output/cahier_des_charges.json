@@ -1,25 +1,25 @@
 {
-  "nom_projet": "Todo App",
-  "description": "Web application for managing tasks",
+  "nom_projet": "BibliothequeWeb",
+  "description": "Application web de gestion de bibliothèque pour gérer des livres",
   "fonctionnalites": [
-    "Create new task",
-    "Mark a task as completed",
-    "Delete a task",
-    "View all tasks",
-    "Filter tasks by date",
-    "Sort tasks by priority"
+    "Ajout de nouveaux livres",
+    "Suppression de livres",
+    "Recherche de livres par titre ou auteur",
+    "Emprunt et retour de livres",
+    "Statistiques sur la collection de livres"
   ],
   "technique": {
-    "frontend": "ReactJS, HTML5, CSS3",
-    "backend": "Node.js, Express.js",
+    "frontend": "ReactJS",
+    "backend": "Node.js avec Express",
     "base_de_donnees": "MongoDB"
   },
-  "architecture": "Client-server architecture with RESTful API",
+  "architecture": "Frontend-Backend",
   "flux_utilisateur": [
-    "Login/Register page",
-    "Dashboard showing all tasks",
-    "Create task form",
-    "Task details page",
-    "Edit task form"
+    "Connexion de l'utilisateur",
+    "Affichage de la liste des livres",
+    "Recherche de livres",
+    "Emprunt de livre",
+    "Retour de livre",
+    "Déconnexion"
   ]
 }

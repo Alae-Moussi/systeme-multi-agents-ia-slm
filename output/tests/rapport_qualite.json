@@ -1,0 +1,35 @@
+{
+  "score_global": "7/10",
+  "frontend": {
+    "points_positifs": [
+      "Projet bien structuré et propre",
+      "Utilisation de CSS pour la mise en page",
+      "Fonctionnalité d'ajout de tâche"
+    ],
+    "points_negatifs": [
+      "Pas de back-end pour stocker les données des tâches, stockées seulement dans le navigateur",
+      "Pas de fonctionnalité pour supprimer ou modifier une tâche",
+      "Pas d'utilisation de framework pour la construction du frontend"
+    ],
+    "score": "5/10"
+  },
+  "backend": {
+    "points_positifs": [
+      "Back-end bien structuré et propre",
+      "Pas de problème apparent avec l'API REST",
+      "Fonctionnalités pour ajouter, récupérer, modifier et supprimer des tâches"
+    ],
+    "points_negatifs": [
+      "Absence de base de données pour stocker les tâches persistemment",
+      "Pas d'utilisation de framework pour la construction du back-end",
+      "Il n'y a pas d'authentification ou d'autorisation"
+    ],
+    "score": "7/10"
+  },
+  "recommandations": [
+    "Ajouter une base de données pour stocker les tâches persistemment",
+    "Utiliser un framework pour la construction du frontend et du back-end",
+    "Ajouter des fonctionnalités pour supprimer ou modifier une tâche",
+    "Ajouter une authentification et une autorisation"
+  ]
+}

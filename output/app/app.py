@@ -1,7 +1,5 @@
- Voici un exemple de code Python Flask complet pour une API REST Todo App :
-
-```python
-from flask import Flask, request, jsonify, make_response, abort
+ ```python
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 
@@ -10,46 +8,67 @@ CORS(app)
 
 tasks = []
 
-# GET /tasks → retourne toutes les tâches
-@app.route('/tasks', methods=['GET'])
 def get_tasks():
-    return jsonify({'tasks': tasks})
+    return tasks
 
-# POST /tasks → crée une tâche
-@app.route('/tasks', methods=['POST'])
-def post_task():
-    data = request.get_json()
-    if not data or 'title' not in data:
-        abort(400, description="Title is missing.")
+def add_task(title):
+    max_id = len(tasks) if tasks else 0
+    new_id = max_id + 1
+    new_task = {'id': new_id, 'title': title}
+    tasks.append(new_task)
+    return new_task
 
-    task = {'id': len(tasks) + 1, 'title': data['title'], 'completed': False}
-    tasks.append(task)
-    return make_response(jsonify({'task': task}), 201)
+def update_task(id, title=None):
+    for task in tasks:
+        if task['id'] == id:
+            if title:
+                task['title'] = title
+            return task
+    return None
 
-# DELETE /tasks/<id> → supprime une tâche
-@app.route('/tasks/<int:id>', methods=['DELETE'])
 def delete_task(id):
-    for task in tasks:
+    for index, task in enumerate(tasks):
         if task['id'] == id:
-            tasks.remove(task)
-            return make_response(jsonify({'result': 'success'}), 200)
-    abort(404, description="Task not found.")
+            tasks.pop(index)
+            return True
+    return False
 
-# PUT /tasks/<id> → met à jour une tâche
+@app.route('/tasks', methods=['GET'])
+def get_all_tasks():
+    return jsonify(get_tasks())
+
+@app.route('/tasks', methods=['POST'])
+def add_new_task():
+    title = request.json.get('title')
+    if not title:
+        return jsonify({'error': 'Title is required'}), 400
+    new_task = add_task(title)
+    return jsonify(new_task), 201
+
+@app.route('/tasks/<int:id>', methods=['GET'])
+def get_specific_task(id):
+    task = update_task(id)
+    if not task:
+        return jsonify({'error': 'Task not found'}), 404
+    return jsonify(task), 200
+
 @app.route('/tasks/<int:id>', methods=['PUT'])
-def put_task(id):
-    data = request.get_json()
+def update_specific_task(id):
+    title = request.json.get('title')
+    if not title:
+        return jsonify({'error': 'Title is required'}), 400
+    task = update_task(id, title)
+    if not task:
+        return jsonify({'error': 'Task not found'}), 404
+    return jsonify(task), 200
 
-    for task in tasks:
-        if task['id'] == id:
-            if 'title' in data:
-                task['title'] = data['title']
-            if 'completed' in data:
-                task['completed'] = data['completed']
-            return make_response(jsonify({'task': task}), 200)
-    abort(404, description="Task not found.")
+@app.route('/tasks/<int:id>', methods=['DELETE'])
+def delete_specific_task(id):
+    success = delete_task(id)
+    if success:
+        return '', 204
+    return jsonify({'error': 'Task not found'}), 404
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
 ```

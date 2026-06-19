@@ -17,13 +17,13 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: auto;
         }
 
         h1 {
             text-align: center;
-            padding: 20px;
+            padding: 2rem;
         }
 
         ul {
@@ -33,18 +33,34 @@
 
         li {
             border-bottom: 1px solid #ccc;
-            padding: 10px;
+            padding: 1rem;
+            font-size: 1.2rem;
         }
 
-        input[type="checkbox"] {
-            margin-right: 10px;
+        li.completed {
+            text-decoration: line-through;
         }
 
-        .delete-btn, .complete-btn {
-            background-color: red;
+        form {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1.2rem;
+            background-color: #3e8e41;
             color: white;
             border: none;
-            padding: 5px 10px;
+            border-radius: 4px;
             cursor: pointer;
         }
     </style>
@@ -52,58 +68,51 @@
 <body>
     <div class="container">
         <h1>Todo App</h1>
-        <form id="task-form">
-            <input type="text" id="task-name" placeholder="Enter task name">
-            <button type="submit">Add Task</button>
+        <ul id="todos"></ul>
+        <form id="todo-form">
+            <input type="text" id="new-todo" placeholder="Add task...">
+            <button onclick="addTodo()">Add</button>
         </form>
-        <ul id="task-list"></ul>
     </div>
 
     <script>
-        const form = document.getElementById('task-form');
-        const taskList = document.getElementById('task-list');
+        const todosEl = document.getElementById('todos');
+        let todos = [];
 
-        function addTask(name) {
-            const li = document.createElement('li');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `task-${Date.now()}`;
+        function addTodo() {
+            if (localStorage.getItem('todos')) {
+                todos = JSON.parse(localStorage.getItem('todos'));
+            }
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            deleteBtn.classList.add('delete-btn');
+            const newTodoText = document.getElementById('new-todo').value;
+            if (!newTodoText.trim()) return;
 
-            const completeBtn = document.createElement('button');
-            completeBtn.textContent = 'Complete';
-            completeBtn.classList.add('complete-btn');
+            const newTodo = document.createElement('li');
+            newTodo.innerHTML = `<span>${newTodoText}</span> <button onclick="toggleCompleted(this)">Complete</button> <button onclick="removeTodo(this)">Delete</button>`;
+            todosEl.appendChild(newTodo);
 
-            li.appendChild(checkbox);
-            li.appendChild(document.createTextNode(name));
-            li.appendChild(deleteBtn);
-            li.appendChild(completeBtn);
-            taskList.appendChild(li);
+            todos.push({ text: newTodoText, completed: false });
+            saveTodos();
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('task-name').value;
-            if (name) {
-                addTask(name);
-                document.getElementById('task-name').value = '';
-            }
-        });
+        function toggleCompleted(todo) {
+            todo.querySelector('span').classList.toggle('completed');
+            const index = todos.findIndex((t) => t.text === todo.querySelector('span').innerText);
+            todos[index].completed = !todos[index].completed;
+            saveTodos();
+        }
 
-        taskList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-btn')) {
-                e.target.parentNode.remove();
-            } else if (e.target.classList.contains('complete-btn')) {
-                e.target.parentNode.style.textDecoration = 'line-through';
-                e.target.remove();
-            }
-        });
+        function removeTodo(todo) {
+            const index = todos.findIndex((t) => t.text === todo.querySelector('span').innerText);
+            todos.splice(index, 1);
+            todo.remove();
+            saveTodos();
+        }
+
+        function saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
     </script>
 </body>
 </html>
 ```
-
-This code provides a simple Todo App with a modern and clean interface, a form to add tasks, a list of tasks with delete and complete buttons, inline CSS, and JavaScript all included in one HTML file. The application does not include any actual data storage or API calls.

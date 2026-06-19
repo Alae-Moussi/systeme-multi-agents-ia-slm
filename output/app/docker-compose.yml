@@ -1,0 +1,24 @@
+```yaml
+version: '3'
+services:
+  frontend:
+    image: nginx:light
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - node_modules:/usr/src/app/node_modules
+      - /usr/src/app/node_modules/nginx:/usr/local/nginx/conf/vhosts
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - frontend
+    volumes:
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+
+volumes:
+  node_modules:
+```
