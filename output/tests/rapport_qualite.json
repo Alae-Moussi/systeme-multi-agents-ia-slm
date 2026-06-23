@@ -1,32 +1,32 @@
 {
-  "score_global": "7.5/10",
+  "score_global": "8/10",
   "frontend": {
     "points_positifs": [
-      "La structure de base du code HTML est correcte et conforme à la norme W3C.",
-      "Le CSS est bien utilisé pour structurer la page et organiser les éléments.",
-      "Les ID des différents éléments sont uniques et réutilisables pour les manipulations JavaScript."
+      "L'utilisation de HTML5 est correcte.",
+      "La structure de votre code HTML est bien organisée avec des balises semantiques.",
+      "Le style CSS inline est utilisé pour la customisation de la page, ce qui est recommandé pour une petite application."
     ],
     "points_negatifs": [
-      "Il n'y a pas de connexion avec l'API Backend, ce qui rend impossible d'ajouter ou de supprimer des tâches à partir du Frontend.",
-      "Il n'y a pas de gestion des événements pour les inputs et les boutons, ce qui peut entraîner des problèmes de fonctionnalité."
+      "Il n'y a pas de pré-partage de rôles entre les fichiers HTML et JavaScript, cela peut rendre difficile à l'entretien et la maintenance du code.",
+      "Les données des tâches ne sont pas stockées localement sur le client et seront perdues si l'utilisateur ferme la page."
     ],
-    "score": "6/10"
+    "score": "7/10"
   },
   "backend": {
     "points_positifs": [
-      "La documentation du code est correcte et explique les différentes routes disponibles.",
-      "L'utilisation de Flask est appropriée pour créer une API REST.",
-      "La connexion avec le Frontend est possible via des méthodes HTTP (GET, POST, PUT, DELETE)."
+      "L'API REST est correctement implémentée avec Flask.",
+      "Flask-CORS est utilisé pour permettre les requêtes CORS.",
+      "Les routes sont bien séparées et claires."
     ],
     "points_negatifs": [
-      "Il n'y a pas de traitement d'erreurs, ce qui peut entraîner des messages d'erreur non compréhensibles pour l'utilisateur.",
-      "Le code ne semble pas avoir été optimisé pour la sécurité, par exemple, il n'y a pas de protection contre les injections SQL."
+      "Les données des tâches ne sont pas stockées localement sur le serveur et seront perdues si l'application est redémarrée.",
+      "Il n'y a pas de base de données pour les tâches, cela peut rendre difficile à l'entretien et la maintenance du code."
     ],
     "score": "8/10"
   },
   "recommandations": [
-    "Ajouter des événements sur les inputs et les boutons pour gérer les interactions utilisateur.",
-    "Connecter le Frontend avec l'API Backend pour permettre aux utilisateurs de créer, supprimer et modifier des tâches.",
-    "Optimiser la sécurité du code en ajoutant des protections contre les injections SQL."
+    "Utiliser une base de données pour stocker les tâches localement sur le serveur.",
+    "Diviser les données des tâches entre les fichiers HTML et JavaScript, cela rendra l'entretien et la maintenance du code plus facile.",
+    "Ajouter une vérification de validité des entrées (par exemple avec JavaScript) pour empêcher les utilisateurs d'insérer des données invalides."
   ]
 }

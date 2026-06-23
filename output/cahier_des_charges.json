@@ -1,20 +1,25 @@
 {
-  "nom_projet": "Library Manager",
-  "description": "A simple application for managing a book inventory with title, description and add button",
+  "nom_projet": "Contact Management Web Application",
+  "description": "A web application designed to manage and organize user contacts efficiently.",
   "fonctionnalites": [
-    "Title input",
-    "Description input",
-    "Add Book Button"
+    "User registration and login",
+    "Adding, editing, and deleting contacts",
+    "Searching for specific contacts",
+    "Exporting contact list in various formats",
+    "Contact sync between devices"
   ],
   "technique": {
-    "frontend": "HTML/CSS/JavaScript",
-    "backend": "Node.js",
+    "frontend": "ReactJS",
+    "backend": "Node.js with Express",
     "base_de_donnees": "MongoDB"
   },
-  "architecture": "Client-Server",
+  "architecture": "Client-Server architecture",
   "flux_utilisateur": [
-    "User enters title and description",
-    "User clicks 'Add Book' button",
-    "New book is added to inventory"
+    "Login",
+    "Contact listing",
+    "Add/edit contact form",
+    "Search contacts",
+    "Export contacts",
+    "Logout"
   ]
 }

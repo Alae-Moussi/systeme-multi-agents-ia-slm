@@ -1,130 +1,69 @@
  ```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arial, sans-serif;
         }
-
-        .container {
+        .todo-container {
             max-width: 600px;
             margin: auto;
-            padding: 20px;
         }
-
-        h1 {
-            text-align: center;
-        }
-
-        input[type="text"],
-        button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
+        .todo-form {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
+            margin-bottom: 20px;
         }
-
-        input[type="checkbox"] {
-            transform: scale(2);
-            margin-right: 10px;
+        .input-field {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .todo-text {
+            text-decoration: ${(task) => task.completed ? "line-through" : "none"};
+        }
+        .complete-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .complete-btn {
+            background-color: lightgreen;
+            color: white;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Todo App</h1>
-        <form id="todoForm">
-            <input type="text" id="todoInput" placeholder="Ajouter une tâche..." required />
-            <button type="submit">Ajouter</button>
+    <div class="todo-container">
+        <form class="todo-form">
+            <input type="text" class="input-field todo-input" placeholder="Add a task...">
+            <button class="input-field todo-button">Add</button>
         </form>
-        <ul id="todos"></ul>
+        <ul class="todo-list"></ul>
     </div>
-
     <script>
-        const todoForm = document.getElementById('todoForm');
-        const todoInput = document.getElementById('todoInput');
-        const todosList = document.getElementById('todos');
-
-        let todos = [];
-
-        function saveTodos() {
-            localStorage.setItem('todos', JSON.stringify(todos));
-        }
-
-        function loadTodos() {
-            if (localStorage.getItem('todos')) {
-                todos = JSON.parse(localStorage.getItem('todos'));
-                renderTodos();
-            }
-        }
-
-        function addTodo(text) {
-            const todo = {
-                text,
-                completed: false
-            };
-
-            todos.push(todo);
-            saveTodos();
-            renderTodos();
-        }
-
-        function deleteTodo(index) {
-            todos.splice(index, 1);
-            saveTodos();
-            renderTodos();
-        }
-
-        function toggleCompleted(index) {
-            todos[index].completed = !todos[index].completed;
-            saveTodos();
-            renderTodos();
-        }
-
-        function renderTodos() {
-            const html = todos.map((todo, index) => `
-                <li>
-                    <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleCompleted(${index})" />
-                    <span${todo.completed ? ' text-decoration: line-through;' : ''}>${todo.text}</span>
-                    <button onclick="deleteTodo(${index})">Supprimer</button>
-                </li>`).join('');
-            todosList.innerHTML = html;
-        }
-
-        loadTodos();
-
-        todoForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!todoInput.value.trim()) return;
-            addTodo(todoInput.value);
-            todoInput.value = '';
-        });
+        // JavaScript code to manage the Todo App goes here.
     </script>
 </body>
-
 </html>
 ```
