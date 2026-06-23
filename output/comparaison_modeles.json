@@ -1,0 +1,18 @@
+{
+  "mistral": {
+    "modele": "Mistral 7B",
+    "taille": "4.4 GB",
+    "duree_secondes": 60.37,
+    "tokens_generes": 59,
+    "vitesse_tok_s": 0.98,
+    "reponse": " {\n  \"nom_projet\": \"Task Management Web Application\",\n  \"description\": \"An application for managing personal or professional tasks efficiently and effectively.\",\n  \"fonctionnalites\": [\"Create new tasks\", \"Edit existing tasks\", \"Delete tasks\", \"Assign deadlines\", \"Set priorities\", \"Filter tasks by date, priority, or status\", \"Receive task notifications\"],\n  \"technique\": {\n    \"frontend\": \"ReactJS or Angular\",\n    \"backend\": \"Node.js with Express or Django\",\n    \"base_de_donnees\": \"MongoDB or PostgreSQL\"\n  }\n}"
+  },
+  "phi3": {
+    "modele": "Phi-3 Mini",
+    "taille": "2.3 GB",
+    "duree_secondes": 72.12,
+    "tokens_generes": 100,
+    "vitesse_tok_s": 1.39,
+    "reponse": "```json\n\n{\n\n  \"nom_projet\": \"TaskManagerWeb\",\n\n  \"description\": \"Cette application web permet à plusieurs utilisateurs de gérer, planifier et suivre les tâches.\",\n\n  \"fonctionnalités\": [\n\n    \"Accueil avec liste des projets en cours\",\n\n    \"Crédit d'enregistrement pour chaque projet\",\n\n    \"Ajout/Mise à jour de nouvelles tâches\"\n\n  ],\n\n  \"technique\": {\n\n    \"frontend\": \"Angular ou React avec Node.js serveur HTTP API RESTful et MongoDB comme base de données NoSQL pour la flexibilité des structures d'enregistrement\",\n\n    \"backend\": \"Node.js servi par ExpressJS, assure le flux de travail entre frontend et la BDD.\",\n\n    \"base_dedependent \": \"MongoDB est choisi pour sa scalabilité et ses performances élevées avec des structures d'enregistrement dynamiques.\"\n\n  }\n\n}\n\n```"
+  }
+}

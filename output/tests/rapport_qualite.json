@@ -1,35 +1,32 @@
 {
-  "score_global": "7/10",
+  "score_global": "7.5/10",
   "frontend": {
     "points_positifs": [
-      "Projet bien structuré et propre",
-      "Utilisation de CSS pour la mise en page",
-      "Fonctionnalité d'ajout de tâche"
+      "La structure de base du code HTML est correcte et conforme à la norme W3C.",
+      "Le CSS est bien utilisé pour structurer la page et organiser les éléments.",
+      "Les ID des différents éléments sont uniques et réutilisables pour les manipulations JavaScript."
     ],
     "points_negatifs": [
-      "Pas de back-end pour stocker les données des tâches, stockées seulement dans le navigateur",
-      "Pas de fonctionnalité pour supprimer ou modifier une tâche",
-      "Pas d'utilisation de framework pour la construction du frontend"
+      "Il n'y a pas de connexion avec l'API Backend, ce qui rend impossible d'ajouter ou de supprimer des tâches à partir du Frontend.",
+      "Il n'y a pas de gestion des événements pour les inputs et les boutons, ce qui peut entraîner des problèmes de fonctionnalité."
     ],
-    "score": "5/10"
+    "score": "6/10"
   },
   "backend": {
     "points_positifs": [
-      "Back-end bien structuré et propre",
-      "Pas de problème apparent avec l'API REST",
-      "Fonctionnalités pour ajouter, récupérer, modifier et supprimer des tâches"
+      "La documentation du code est correcte et explique les différentes routes disponibles.",
+      "L'utilisation de Flask est appropriée pour créer une API REST.",
+      "La connexion avec le Frontend est possible via des méthodes HTTP (GET, POST, PUT, DELETE)."
     ],
     "points_negatifs": [
-      "Absence de base de données pour stocker les tâches persistemment",
-      "Pas d'utilisation de framework pour la construction du back-end",
-      "Il n'y a pas d'authentification ou d'autorisation"
+      "Il n'y a pas de traitement d'erreurs, ce qui peut entraîner des messages d'erreur non compréhensibles pour l'utilisateur.",
+      "Le code ne semble pas avoir été optimisé pour la sécurité, par exemple, il n'y a pas de protection contre les injections SQL."
     ],
-    "score": "7/10"
+    "score": "8/10"
   },
   "recommandations": [
-    "Ajouter une base de données pour stocker les tâches persistemment",
-    "Utiliser un framework pour la construction du frontend et du back-end",
-    "Ajouter des fonctionnalités pour supprimer ou modifier une tâche",
-    "Ajouter une authentification et une autorisation"
+    "Ajouter des événements sur les inputs et les boutons pour gérer les interactions utilisateur.",
+    "Connecter le Frontend avec l'API Backend pour permettre aux utilisateurs de créer, supprimer et modifier des tâches.",
+    "Optimiser la sécurité du code en ajoutant des protections contre les injections SQL."
   ]
 }

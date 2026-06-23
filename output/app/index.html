@@ -1,6 +1,7 @@
  ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,6 @@
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
@@ -17,13 +16,22 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 600px;
             margin: auto;
+            padding: 20px;
         }
 
         h1 {
             text-align: center;
-            padding: 2rem;
+        }
+
+        input[type="text"],
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            margin-bottom: 20px;
         }
 
         ul {
@@ -32,87 +40,91 @@
         }
 
         li {
-            border-bottom: 1px solid #ccc;
-            padding: 1rem;
-            font-size: 1.2rem;
-        }
-
-        li.completed {
-            text-decoration: line-through;
-        }
-
-        form {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
         }
 
-        input[type="text"] {
-            padding: 0.5rem;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 4px;
-            outline: none;
-        }
-
-        button {
-            padding: 0.5rem 1rem;
-            font-size: 1.2rem;
-            background-color: #3e8e41;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        input[type="checkbox"] {
+            transform: scale(2);
+            margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Todo App</h1>
-        <ul id="todos"></ul>
-        <form id="todo-form">
-            <input type="text" id="new-todo" placeholder="Add task...">
-            <button onclick="addTodo()">Add</button>
+        <form id="todoForm">
+            <input type="text" id="todoInput" placeholder="Ajouter une tâche..." required />
+            <button type="submit">Ajouter</button>
         </form>
+        <ul id="todos"></ul>
     </div>
 
     <script>
-        const todosEl = document.getElementById('todos');
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+        const todosList = document.getElementById('todos');
+
         let todos = [];
-
-        function addTodo() {
-            if (localStorage.getItem('todos')) {
-                todos = JSON.parse(localStorage.getItem('todos'));
-            }
-
-            const newTodoText = document.getElementById('new-todo').value;
-            if (!newTodoText.trim()) return;
-
-            const newTodo = document.createElement('li');
-            newTodo.innerHTML = `<span>${newTodoText}</span> <button onclick="toggleCompleted(this)">Complete</button> <button onclick="removeTodo(this)">Delete</button>`;
-            todosEl.appendChild(newTodo);
-
-            todos.push({ text: newTodoText, completed: false });
-            saveTodos();
-        }
-
-        function toggleCompleted(todo) {
-            todo.querySelector('span').classList.toggle('completed');
-            const index = todos.findIndex((t) => t.text === todo.querySelector('span').innerText);
-            todos[index].completed = !todos[index].completed;
-            saveTodos();
-        }
-
-        function removeTodo(todo) {
-            const index = todos.findIndex((t) => t.text === todo.querySelector('span').innerText);
-            todos.splice(index, 1);
-            todo.remove();
-            saveTodos();
-        }
 
         function saveTodos() {
             localStorage.setItem('todos', JSON.stringify(todos));
         }
+
+        function loadTodos() {
+            if (localStorage.getItem('todos')) {
+                todos = JSON.parse(localStorage.getItem('todos'));
+                renderTodos();
+            }
+        }
+
+        function addTodo(text) {
+            const todo = {
+                text,
+                completed: false
+            };
+
+            todos.push(todo);
+            saveTodos();
+            renderTodos();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+        }
+
+        function toggleCompleted(index) {
+            todos[index].completed = !todos[index].completed;
+            saveTodos();
+            renderTodos();
+        }
+
+        function renderTodos() {
+            const html = todos.map((todo, index) => `
+                <li>
+                    <input type="checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleCompleted(${index})" />
+                    <span${todo.completed ? ' text-decoration: line-through;' : ''}>${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">Supprimer</button>
+                </li>`).join('');
+            todosList.innerHTML = html;
+        }
+
+        loadTodos();
+
+        todoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!todoInput.value.trim()) return;
+            addTodo(todoInput.value);
+            todoInput.value = '';
+        });
     </script>
 </body>
+
 </html>
 ```

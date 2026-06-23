@@ -1,77 +1,114 @@
- Voici les tests unitaires pour le code Flask en utilisant Pytest :
+ Voici les tests unitaires pour la Todo App API REST en utilisant pytest et le client de test Flask :
 
 ```python
-import os
+import json
 from unittest.mock import patch
 import pytest
-from flask import Flask
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
-from application import app, tasks
 
-def create_app():
-    app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = False
-    return app
+app = Flask(__name__)
+CORS(app)
+tasks = []
 
-@pytest.fixture(scope='module')
-def client():
-    app = create_app()
-    with app.test_client() as testing_client:
-        yield testing_client
-
-def test_get_all_tasks():
-    # Ajout de tâches pour les tests suivants
-    add_task('Test 1')
-    add_task('Test 2')
-
-    with client as c:
-        response = c.get('/tasks')
+def test_get_tasks():
+    with app.test_client() as client:
+        # Initial state (empty list)
+        response = client.get('/tasks')
         assert response.status_code == 200
-        data = response.get_json()
-        assert len(data) == 2
-        assert data[0]['id'] == 1 and data[1]['id'] == 2
+        data = json.loads(response.data.decode())
+        assert data['tasks'] == []
 
-def test_add_new_task():
-    with client as c:
-        response = c.post('/tasks', json={'title': 'Test 3'})
+        # Add a task and verify it's returned
+        post_task({'title': 'Test Task'})
+        response = client.get('/tasks')
+        assert response.status_code == 200
+        data = json.loads(response.data.decode())
+        assert len(data['tasks']) == 1
+        assert data['tasks'][0]['title'] == 'Test Task'
+
+def test_post_task():
+    with app.test_client() as client:
+        # Invalid request (no title)
+        response = client.post('/tasks', data={})
+        assert response.status_code == 400
+        data = json.loads(response.data.decode())
+        assert data['error'] == 'Title is required'
+
+        # Valid request
+        response = client.post('/tasks', data={'title': 'Test Task'})
         assert response.status_code == 201
-        data = response.get_json()
-        assert len(data) == 1 and data['id'] > 2
+        data = json.loads(response.data.decode())
+        assert len(tasks) == 1
+        assert data['task']['id'] == 1
+        assert data['task']['title'] == 'Test Task'
+        assert not data['task']['completed']
 
-def test_get_specific_task():
-    add_task('Test 4')
+def test_get_task():
+    with app.test_client() as client:
+        # Initial state (empty list)
+        response = client.get('/tasks/1')
+        assert response.status_code == 404
+        data = json.loads(response.data.decode())
+        assert data['error'] == 'Task not found'
 
-    with client as c:
-        response = c.get('/tasks/1')  # Vérifie que le premier élément de la liste peut être récupéré
+        # Add a task and verify it can be fetched
+        post_task({'title': 'Test Task'})
+        response = client.get('/tasks/1')
         assert response.status_code == 200
-        data = response.get_json()
-        assert len(data) == 1 and data['id'] == 1
+        data = json.loads(response.data.decode())
+        assert data['task']['id'] == 1
+        assert data['task']['title'] == 'Test Task'
+        assert not data['task']['completed']
 
-def test_update_specific_task():
-    add_task('Test 5')
+def test_put_task():
+    with app.test_client() as client:
+        # Initial state (empty list)
+        response = client.put('/tasks/1')
+        assert response.status_code == 404
+        data = json.loads(response.data.decode())
+        assert data['error'] == 'Task not found'
 
-    with client as c:
-        response = c.put('/tasks/1', json={'title': 'Updated Test'})
+        # Add a task and update it
+        post_task({'title': 'Test Task'})
+        updated_data = {'title': 'Updated Test Task', 'completed': True}
+        with patch.object(request, 'get_json') as mock_get_json:
+            mock_get_json.return_value = updated_data
+            response = client.put('/tasks/1')
+            assert response.status_code == 200
+            data = json.loads(response.data.decode())
+            assert data['task']['id'] == 1
+            assert data['task']['title'] == 'Updated Test Task'
+            assert data['task']['completed'] == True
+
+def test_delete_task():
+    with app.test_client() as client:
+        # Initial state (empty list)
+        response = client.delete('/tasks/1')
+        assert response.status_code == 404
+        data = json.loads(response.data.decode())
+        assert data['error'] == 'Task not found'
+
+        # Add a task and delete it
+        post_task({'title': 'Test Task'})
+        response = client.delete('/tasks/1')
         assert response.status_code == 200
-        data = response.get_json()
-        assert len(data) == 1 and data['id'] == 1 and data['title'] == 'Updated Test'
+        data = json.loads(response.data.decode())
+        assert data['result'] == 'Task deleted'
+        assert len(tasks) == 0
 
-def test_delete_specific_task():
-    add_task('Test 6')
-
-    with client as c:
-        response = c.delete('/tasks/1')  # Vérifie que la première tâche peut être supprimée
-        assert response.status_code == 204
-        tasks_after_deletion = [task for task in tasks if task['id'] != 1]
-        assert len(tasks_after_deletion) == 5 and 'Test 6' in [task['title'] for task in tasks_after_deletion]
-
-@patch('os.getenv')
-def test_app_runs(mock_getenv):
-    mock_getenv.return_value = 'test'
-    with app.test_client() as c:
-        c.get('/')  # Vérifie que l'application se lance correctement lors du test
+@patch('flask.request.get_json', return_value=None)
+def test_invalid_post_task(mock_get_json):
+    with app.test_client() as client:
+        response = client.post('/tasks')
+        assert response.status_code == 400
+        data = json.loads(response.data.decode())
+        assert data['error'] == 'Title is required'
 ```
 
-Il est important d'ajouter la fonction `create_app()` pour permettre à Pytest de créer une instance de l'application Flask spécifique aux tests. Dans cette fonction, on active le mode de test (TESTING) et désactive CSRF pour permettre les requêtes POST, PUT et DELETE.
-
-Le client de test Flask est utilisé avec la fonction `client()` dans chaque test pour exécuter des requêtes HTTP vers l'application.
+Ce code contient des tests unitaires pour les différentes fonctions de l'API REST :
+- `test_get_tasks()` vérifie que la fonction GET /tasks renvoie une liste
+- `test_post_task()` vérifie que la fonction POST /tasks crée une tâche
+- `test_get_task()` vérifie que la fonction GET /tasks/<id> renvoie une tâche spécifique ou une erreur lorsque l'ID est incorrect
+- `test_put_task()` vérifie que la fonction PUT /tasks/<id> met à jour une tâche existante
+- `test_delete_task()` vérifie que la fonction DELETE /tasks/<id> supprime une tâche spécifique ou renvoie une erreur lorsque l'ID est incorrect

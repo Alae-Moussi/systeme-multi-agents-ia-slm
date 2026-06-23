@@ -1,25 +1,20 @@
 {
-  "nom_projet": "BibliothequeWeb",
-  "description": "Application web de gestion de bibliothèque pour gérer des livres",
+  "nom_projet": "Library Manager",
+  "description": "A simple application for managing a book inventory with title, description and add button",
   "fonctionnalites": [
-    "Ajout de nouveaux livres",
-    "Suppression de livres",
-    "Recherche de livres par titre ou auteur",
-    "Emprunt et retour de livres",
-    "Statistiques sur la collection de livres"
+    "Title input",
+    "Description input",
+    "Add Book Button"
   ],
   "technique": {
-    "frontend": "ReactJS",
-    "backend": "Node.js avec Express",
+    "frontend": "HTML/CSS/JavaScript",
+    "backend": "Node.js",
     "base_de_donnees": "MongoDB"
   },
-  "architecture": "Frontend-Backend",
+  "architecture": "Client-Server",
   "flux_utilisateur": [
-    "Connexion de l'utilisateur",
-    "Affichage de la liste des livres",
-    "Recherche de livres",
-    "Emprunt de livre",
-    "Retour de livre",
-    "Déconnexion"
+    "User enters title and description",
+    "User clicks 'Add Book' button",
+    "New book is added to inventory"
   ]
 }
