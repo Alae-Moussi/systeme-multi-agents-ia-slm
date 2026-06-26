@@ -31,8 +31,16 @@ Génère un cahier des charges en JSON avec exactement cette structure :
     "base_de_donnees": "..."
   }},
   "architecture": "...",
-  "flux_utilisateur": ["...", "...", "..."]
+  "flux_utilisateur": ["...", "...", "..."],
+  "uml_diagramme": "..."
 }}
+
+CONTRAINTES CRUCIALES POUR LA SÉLECTION DES TECHNOLOGIES :
+- Pour le "frontend", tu dois UNIQUEMENT utiliser : "HTML/CSS" ou "HTML/CSS/JS". Interdiction absolue d'inventer ou d'utiliser React, Angular ou Vue.
+- Pour le "backend", tu dois UNIQUEMENT utiliser : "Flask". Interdiction absolue d'inventer ou d'utiliser Node.js, Express, Django ou FastAPI.
+
+CONTRAINTE POUR L'UML :
+- Dans la clé "uml_diagramme", génère une chaîne de caractères contenant le code textuel Mermaid.js complet pour un diagramme de classes (classDiagram) représentant le modèle de données et les contrôleurs de l'application (Ex: class Tache {{ +int id \n +String titre }}).
 
 Réponds UNIQUEMENT avec le JSON, rien d'autre.
 """

@@ -18,33 +18,32 @@ prompt_html = PromptTemplate(
     input_variables=["cahier"],
     template="""
 Tu es un développeur web expert.
-Voici le cahier des charges : {cahier}
+Voici le cahier des charges de l'application : {cahier}
 
-Génère UNIQUEMENT le code HTML complet d'une Todo App.
-- Interface propre et moderne
-- Formulaire pour ajouter une tâche
-- Liste des tâches avec bouton supprimer et compléter
-- CSS inclus dans la balise <style>
-- JavaScript inclus dans la balise <script>
-- Tout dans un seul fichier HTML
-Réponds UNIQUEMENT avec le code HTML, rien d'autre.
+En te basant STRICTEMENT sur les fonctionnalités et le nom du projet décrits ci-dessus, génère le code HTML complet de l'interface utilisateur.
+- Crée une interface propre, moderne et responsive adaptée au thème spécifique du projet.
+- Intègre des formulaires, des tableaux ou des listes dynamiques pour afficher et gérer les entités décrites (ex: si c'est une gestion d'étudiants, crée des champs pour le nom, la note, etc.).
+- Inclus le CSS complet directement dans la balise <style>.
+- Inclus le JavaScript complet dans la balise <script> pour lier cette interface aux futurs endpoints de l'API Backend Flask.
+- Tout le code frontend doit tenir dans un seul et unique fichier HTML.
+
+Réponds UNIQUEMENT avec le code HTML propre, aucun texte d'introduction.
 """
 )
 
 prompt_backend = PromptTemplate(
     input_variables=["cahier"],
     template="""
-Tu es un développeur backend expert.
-Voici le cahier des charges : {cahier}
+Tu es un développeur backend expert en Python et Flask.
+Voici le cahier des charges de l'application : {cahier}
 
-Génère UNIQUEMENT le code Python Flask complet pour une Todo App API REST :
-- GET /tasks → retourne toutes les tâches
-- POST /tasks → crée une tâche
-- DELETE /tasks/<id> → supprime une tâche
-- PUT /tasks/<id> → met à jour une tâche
-- Utilise une liste Python simple (pas de base de données)
-- Inclus Flask-CORS pour connecter au frontend
-Réponds UNIQUEMENT avec le code Python, rien d'autre.
+En te basant STRICTEMENT sur les fonctionnalités et l'architecture décrites ci-dessus, génère le code complet d'une API REST fonctionnelle avec Flask (`app.py`).
+- Crée des routes HTTP (GET, POST, PUT, DELETE) logiques et nommées d'après les entités du projet (ex: /students, /elements, /produits au lieu de /tasks).
+- Utilise une structure de stockage temporaire en mémoire vive (listes ou dictionnaires Python) adaptée pour manipuler ces objets.
+- Active CORS via `CORS(app)` pour que le frontend HTML puisse consommer cette API sans blocage de sécurité.
+- Ne mets aucun blabla explicatif ni de délimiteurs de code markdown (comme ```python). Le fichier doit démarrer directement par l'import des modules.
+
+Réponds UNIQUEMENT avec le code Python valide, rien d'autre.
 """
 )
 

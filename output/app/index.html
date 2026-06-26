@@ -1,69 +1,107 @@
- ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+    <title>Gestion des étudiants</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .todo-container {
-            max-width: 600px;
-            margin: auto;
-        }
-        .todo-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .input-field {
-            flex-grow: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
-        }
-        .todo-list {
-            list-style: none;
-            padding: 0;
-        }
-        .todo-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        .todo-text {
-            text-decoration: ${(task) => task.completed ? "line-through" : "none"};
-        }
-        .complete-btn, .delete-btn {
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-        }
-        .complete-btn {
-            background-color: lightgreen;
-            color: white;
-        }
-        .delete-btn {
-            background-color: red;
-            color: white;
-        }
+        /* CSS styles */
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+        th { background-color: #4CAF50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        form { margin-bottom: 20px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; margin-top: 6px; margin-bottom: 12px; border-radius: 4px; }
+        button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #45a049; }
     </style>
 </head>
 <body>
-    <div class="todo-container">
-        <form class="todo-form">
-            <input type="text" class="input-field todo-input" placeholder="Add a task...">
-            <button class="input-field todo-button">Add</button>
+    <div class="container">
+        <h1>Gestion des étudiants</h1>
+        <form id="etudiant-form">
+            <input type="hidden" name="id" id="id">
+            <label for="nom">Nom : </label>
+            <input type="text" name="nom" id="nom" required>
+            <label for="prenom">Prénom : </label>
+            <input type="text" name="prenom" id="prenom" required>
+            
+            <button type="submit">Enregistrer</button>
         </form>
-        <ul class="todo-list"></ul>
+        
+        <h2>Liste des étudiants</h2>
+        <table id="etudiants-table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                </tr>
+            </thead>
+            <tbody id="etudiants-tbody">
+                <!-- Les lignes seront ajoutées dynamiquement ici -->
+            </tbody>
+        </table>
     </div>
+
     <script>
-        // JavaScript code to manage the Todo App goes here.
+        // Utilisation de l'adresse IP locale absolue pour éviter les conflits localhost
+        const API_URL = 'http://127.0.0.1:5000/etudiants'; 
+        const form = document.getElementById('etudiant-form');
+        const tbody = document.getElementById('etudiants-tbody');
+
+        // 1. Récupérer et afficher les étudiants
+        async function fetchEtudiants() {
+            try {
+                const response = await fetch(API_URL);
+                const etudiants = await response.json();
+                
+                // On vide le tableau avant d'ajouter les éléments
+                tbody.innerHTML = '';
+                
+                etudiants.forEach(etudiant => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${etudiant.nom}</td>
+                        <td>${etudiant.prenom}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Erreur lors de la récupération des étudiants:", error);
+            }
+        }
+
+        // 2. Ajouter un étudiant via le formulaire
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Empêche le rechargement de la page
+
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nom, prenom })
+                });
+
+                if (response.ok) {
+                    form.reset(); // Vide les champs du formulaire
+                    fetchEtudiants(); // Rafraîchit la liste automatiquement
+                } else {
+                    console.error("Erreur lors de l'enregistrement");
+                }
+            } catch (error) {
+                console.error("Erreur réseau :", error);
+            }
+        });
+
+        // Charger la liste dès le démarrage de la page
+        fetchEtudiants();
     </script>
 </body>
 </html>
-```

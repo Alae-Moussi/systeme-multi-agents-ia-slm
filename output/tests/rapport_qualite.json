@@ -1,32 +1,33 @@
 {
-  "score_global": "8/10",
+  "score_global": "6/10",
   "frontend": {
     "points_positifs": [
-      "L'utilisation de HTML5 est correcte.",
-      "La structure de votre code HTML est bien organisée avec des balises semantiques.",
-      "Le style CSS inline est utilisé pour la customisation de la page, ce qui est recommandé pour une petite application."
+      "Le code HTML est bien structuré et utilise des balises semantiques.",
+      "Il y a une classe CSS pour les styles."
     ],
     "points_negatifs": [
-      "Il n'y a pas de pré-partage de rôles entre les fichiers HTML et JavaScript, cela peut rendre difficile à l'entretien et la maintenance du code.",
-      "Les données des tâches ne sont pas stockées localement sur le client et seront perdues si l'utilisateur ferme la page."
+      "L'interface ne contient pas de connexion aux endpoints Flask.",
+      "Il n'y a pas de validation des données.",
+      "Il manque d'optimisations nécessaires pour une application réelle."
     ],
-    "score": "7/10"
+    "score": "4/10"
   },
   "backend": {
     "points_positifs": [
-      "L'API REST est correctement implémentée avec Flask.",
-      "Flask-CORS est utilisé pour permettre les requêtes CORS.",
-      "Les routes sont bien séparées et claires."
+      "C'est un exemple de base de votre application REST Flask.",
+      "Il y a une méthode pour récupérer la liste des étudiants."
     ],
     "points_negatifs": [
-      "Les données des tâches ne sont pas stockées localement sur le serveur et seront perdues si l'application est redémarrée.",
-      "Il n'y a pas de base de données pour les tâches, cela peut rendre difficile à l'entretien et la maintenance du code."
+      "Le code ne prend pas en compte la structure des données et les contraintes de vérification de la saisie.",
+      "Il n'y a pas d'endpoints pour créer, mettre à jour ou supprimer un étudiant."
     ],
-    "score": "8/10"
+    "score": "3/10"
   },
   "recommandations": [
-    "Utiliser une base de données pour stocker les tâches localement sur le serveur.",
-    "Diviser les données des tâches entre les fichiers HTML et JavaScript, cela rendra l'entretien et la maintenance du code plus facile.",
-    "Ajouter une vérification de validité des entrées (par exemple avec JavaScript) pour empêcher les utilisateurs d'insérer des données invalides."
+    "Ajouter une connexion aux endpoints Flask dans l'interface HTML.",
+    "Implémenter la validation des données dans l'interface HTML.",
+    "Optimiser l'interface HTML pour une application réelle.",
+    "Ajouter des fonctionnalités d'ajout, mise à jour et suppression d'étudiants dans le backend.",
+    "Consulter la documentation de Flask pour enrichir votre application."
   ]
 }

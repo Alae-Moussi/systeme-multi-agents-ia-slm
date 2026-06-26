@@ -1,60 +1,79 @@
- Voici un exemple de code Python pour la Todo App API REST en utilisant Flask et Flask-CORS :
-
-```python
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import os
 
 app = Flask(__name__)
+# Configuration de CORS pour autoriser l'accès depuis ton fichier index.html local
 CORS(app)
 
-tasks = []
+students = []
 
-@app.route('/tasks', methods=['GET'])
-def get_all_tasks():
-    return jsonify({'tasks': tasks})
+class Student:
+    def __init__(self, id, nom, prenom):
+        self.id = id
+        self.nom = nom
+        self.prenom = prenom
 
-@app.route('/tasks', methods=['POST'])
-def create_task():
+def get_student(id):
+    for student in students:
+        if student.id == id:
+            return student
+    return None
+
+# Changement de /students à /etudiants pour correspondre au fichier HTML
+@app.route('/etudiants', methods=['GET'])
+def list_students():
+    result = []
+    for student in students:
+        result.append({"id": student.id, "nom": student.nom, "prenom": student.prenom})
+    return jsonify(result)
+
+@app.route('/etudiants/<int:id>', methods=['GET'])
+def get_student_by_id(id):
+    student = get_student(id)
+    if student:
+        return jsonify({"id": student.id, "nom": student.nom, "prenom": student.prenom})
+    else:
+        return jsonify({"error": "Étudiant non trouvé."}), 404
+
+@app.route('/etudiants', methods=['POST'])
+def add_student():
     data = request.get_json()
-    if not data:
-        return 'Error: No task provided.', 400
+    
+    # CORRECTION : On ne vérifie plus 'id' ici, car l'ID est généré automatiquement par le serveur
+    if data and 'nom' in data and 'prenom' in data:
+        # Génération d'un ID unique incrémental
+        next_id = len(students) + 1 if len(students) == 0 else max(s.id for s in students) + 1
+        
+        new_student = Student(next_id, data['nom'], data['prenom'])
+        students.append(new_student)
+        return jsonify({"id": new_student.id, "nom": new_student.nom, "prenom": new_student.prenom}), 201
+    else:
+        return jsonify({"error": "Données invalides. 'nom' et 'prenom' sont requis."}), 400
 
-    new_task = {
-        'id': len(tasks) + 1,
-        'title': data['title'],
-        'description': data.get('description'),
-        'completed': False
-    }
+@app.route('/etudiants/<int:id>', methods=['PUT'])
+def update_student(id):
+    student = get_student(id)
+    if student:
+        data = request.get_json()
+        if 'nom' in data or 'prenom' in data:
+            if 'nom' in data:
+                student.nom = data['nom']
+            if 'prenom' in data:
+                student.prenom = data['prenom']
+            return jsonify({"id": student.id, "nom": student.nom, "prenom": student.prenom})
+        else:
+            return jsonify({"error": "Données invalides."}), 400
+    else:
+        return jsonify({"error": "Étudiant non trouvé."}), 404
 
-    tasks.append(new_task)
-    return jsonify({'task': new_task}), 201
-
-@app.route('/tasks/<int:id>', methods=['DELETE'])
-def delete_task(id):
-    global tasks
-    try:
-        index = tasks.index(next(filter(lambda x: x['id'] == id, tasks)))
-        tasks.pop(index)
-        return '', 204
-    except StopIteration:
-        return 'Error: Task not found.', 404
-
-@app.route('/tasks/<int:id>', methods=['PUT'])
-def update_task(id):
-    data = request.get_json()
-    if not data:
-        return 'Error: No task provided.', 400
-
-    try:
-        task = next(filter(lambda x: x['id'] == id, tasks))
-    except StopIteration:
-        return 'Error: Task not found.', 404
-
-    task.update(data)
-    return jsonify({'task': task}), 200
+@app.route('/etudiants/<int:id>', methods=['DELETE'])
+def delete_student(id):
+    student = get_student(id)
+    if student:
+        students.remove(student)
+        return jsonify({"result": "Étudiant supprimé."})
+    else:
+        return jsonify({"error": "Étudiant non trouvé."}), 404
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(port=port, debug=True)
-```
+    app.run(debug=True, port=5000)

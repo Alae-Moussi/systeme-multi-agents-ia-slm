@@ -1,25 +1,24 @@
 {
-  "nom_projet": "Contact Management Web Application",
-  "description": "A web application designed to manage and organize user contacts efficiently.",
+  "nom_projet": "Gestion des étudiants",
+  "description": "Application web pour gérer les informations des étudiants enregistrés dans une institution.",
   "fonctionnalites": [
-    "User registration and login",
-    "Adding, editing, and deleting contacts",
-    "Searching for specific contacts",
-    "Exporting contact list in various formats",
-    "Contact sync between devices"
+    "Enregistrement d'étudiant",
+    "Modification d'informations étudiant",
+    "Suppression d'étudiant",
+    "Recherche d'un étudiant",
+    "Affichage de la liste des étudiants"
   ],
   "technique": {
-    "frontend": "ReactJS",
-    "backend": "Node.js with Express",
-    "base_de_donnees": "MongoDB"
+    "frontend": "HTML/CSS/JS",
+    "backend": "Flask",
+    "base_de_donnees": "SQLite3"
   },
-  "architecture": "Client-Server architecture",
+  "architecture": "Client-serveur",
   "flux_utilisateur": [
-    "Login",
-    "Contact listing",
-    "Add/edit contact form",
-    "Search contacts",
-    "Export contacts",
-    "Logout"
-  ]
+    "Connexion",
+    "Affichage de la liste des étudiants",
+    "Création/Modification/Suppression d'étudiant",
+    "Recherche d'un étudiant"
+  ],
+  "uml_diagramme": "```mermaid\nclassDiagram\n\tclass Etudiant {\n\t\thasId:\n\t\thasNom : String\n\t\thasPrenom : String\n}\n\tclass Inscription {\n\t\thasEtudiant : Etudiant\n\t\thasCours : Cours\n}\n\tclass Cours {\n\t\thasNom : String\n\t\thasProfesseur : Professeur\n}\n\tclass Professeur {\n\t\thasId:\n\t\thasNom : String\n\t\thasPrenom : String\n}\n```"
 }

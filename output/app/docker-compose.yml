@@ -6,8 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./frontend:/usr/share/nginx/html
-      - node_modules:/usr/local/node_modules
+      - ./frontend:/var/www/html
   backend:
     build: .
     ports:
@@ -16,8 +15,4 @@ services:
       - frontend
     volumes:
       - ./backend:/app
-      - node_modules_backend:/usr/local/node_modules
-volumes:
-  node_modules:
-  node_modules_backend:
 ```
